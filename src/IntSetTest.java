@@ -1,8 +1,29 @@
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class IntSetTest {
+
+	@Before
+	public void generateSets() {
+		Random rnd = new Random(100);
+
+		this.emptyIntSet = new IntSet(0);
+		int capacity;
+		for (int i = 0; i < 10; i++) {
+			capacity = rnd.nextInt();
+			this.intSetlist[i] = new IntSet(capacity);
+			capacityArray[i] = capacity;
+		}
+
+	}
+
+	private IntSet emptyIntSet;
+	private final IntSet[] intSetlist = new IntSet[10];
+	private final int[] capacityArray = new int[10];
 
 	/**
 	 * Creates a new set with 0 elements.
@@ -15,7 +36,14 @@ public class IntSetTest {
 	 */
 	@Test
 	public void testIntSet() {
-		throw new UnsupportedOperationException("not yet implemented");
+		for (int i = 0; i < this.intSetlist.length; i++) {
+			IntSet set = this.intSetlist[i];
+			int capacity = this.capacityArray[i];
+
+			assert set.getCapacity() >= 0;
+			assert set.getCount() == 0;
+			assert set.getCapacity() == capacity;
+		}
 	}
 
 	/**
@@ -25,7 +53,8 @@ public class IntSetTest {
 	 */
 	@Test
 	public void testIsEmpty() {
-		throw new UnsupportedOperationException("not yet implemented");
+		assert this.emptyIntSet.isEmpty();
+		assert this.emptyIntSet.getCount() == 0;
 	}
 
 	/**
