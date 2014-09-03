@@ -1,7 +1,7 @@
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,24 +40,20 @@ public class IntSetTest {
 	 * Creates a new set with 0 elements.
 	 * 
 	 * @param capacity
-	 *            the maximal number of elements this set can have
+	 * the maximal number of elements this set can have
 	 * @pre capacity >= 0
 	 * @post getCount() == 0
 	 * @post getCapacity() == capacity
 	 */
 	@Test
 	public void testIntSet() {
-		int capacity;
-		IntSet set;
-		for (int i = 0; i < this.intSetlist.length; i++) {
-			set = this.intSetlist[i];
-			capacity = this.capacityArray[i];
-
-			assert set.getCapacity() >= 0;
-			assert set.getCount() == 0;
-			assert set.getCapacity() == capacity;
-		}
-		//todo doe dit fixen
+            int capacity = 10;
+            IntSet intSet = new IntSet(capacity);
+            assert intSet.getClass() == IntSet.class;
+            assert intSet != null;
+            assert intSet.getCount() == 0;
+            assert intSet.getCapacity() == capacity;
+            
 	}
 
 	/**
@@ -78,7 +74,7 @@ public class IntSetTest {
 	 */
 	@Test
 	public void testHas() {
-		IntSet intSet = getFilledIntSet();
+		IntSet intSet = new IntSet(1);
 		intSet.add(5);
 		assert intSet.has(5);
 	}
@@ -133,8 +129,8 @@ public class IntSetTest {
 		
 		//Empty set
 		assert intSet.intersect(intSet).isEmpty();
-		assert intSet.intersect(intSet).getCapacity() == intSet.getCapacity();
-		assert intSet.intersect(intSet).getCount() == intSet.getCount();
+		assert intSet.intersect(intSet).getCapacity() == 0;
+		assert intSet.intersect(intSet).getCount() == 0;
 		
 		IntSet firstIntSet = this.getFilledIntSet();
 		IntSet secondIntSet = this.getFilledIntSet();
@@ -157,7 +153,7 @@ public class IntSetTest {
 		
 		//Empty set
 		assert intSet.union(intSet).isEmpty();
-		assert intSet.union(intSet).getCapacity() == intSet.getCapacity();
+		assert intSet.union(intSet).getCapacity() == 0;
 		assert intSet.union(intSet).getCount() == intSet.getCount();
 		
 		IntSet firstIntSet = this.getFilledIntSet();
@@ -199,16 +195,13 @@ public class IntSetTest {
 	public void testGetCount() {
 		int count = 50;
 		IntSet intSet = new IntSet(count);
-		addRandomInts(intSet,count);
+		addInts(intSet,count);
 		assert intSet.getCount() == count;
 	}
 	
-	private void addRandomInts(IntSet intSet,int amount){
-		int randomInt = 4;//Chosen by fair dice roll.
-						  //Guaranteed to be random.
-						  //http://xkcd.com/221/
+	private void addInts(IntSet intSet,int amount){
 		for(int i =0; i < amount;i++){
-			intSet.add(randomInt);
+			intSet.add(i);
 		}
 	}
 
@@ -232,10 +225,11 @@ public class IntSetTest {
 	public void testToString() {
 		IntSet intSet = this.getFilledIntSet();
 		String result = intSet.toString();
-		String regex = "^{((\\d*)|(\\d+(\\,\\s\\d+)+))}$"; //Machtes {}, {a}, {a, b, c ....}
+		String regex = "^\\{((\\d*)|(\\d+(\\,\\s\\d+)+))\\}$"; //Machtes {}, {a}, {a, b, c ....}
 		assert Pattern.matches(regex, result);		
-		result.replaceAll("[^0-9]+", " ");
-		for(String v : Arrays.asList(result.trim().split(" "))){
+		result = result.replaceAll("[^0-9]+", " ");
+		List<String> stringArray = Arrays.asList(result.trim().split(" "));
+		for(String v : stringArray){
 			assert intSet.has(Integer.parseInt(v));
 		}
 	}

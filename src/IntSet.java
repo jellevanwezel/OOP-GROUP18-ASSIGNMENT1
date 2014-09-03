@@ -41,7 +41,7 @@ public class IntSet {
 	 * @return exists int v in getArray() such that v == value
 	 */
 	public boolean has(int value) {
-		return this.set.contains(value);
+		return this.set.contains(new Integer(value));
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class IntSet {
 	 * @post this@pre.has(value) implies (getCount() == this@pre.getCount())
 	 */
 	public void add(int value) {
-		if(this.has(value) || this.getCount() + 1 >= this.getCapacity() ){
+		if(this.has(value) || this.getCount() + 1 > this.getCapacity() ){
 			return;
 		}
 		set.add(value);
@@ -68,8 +68,9 @@ public class IntSet {
 	 * @post !this@pre.has(value) implies (getCount() == this@pre.getCount())
 	 */
 	public void remove(int value) {
-		if(this.set.contains(value)){
-			this.set.remove(value);
+                Integer integerVal = new Integer(value);
+		if(this.set.contains(integerVal)){
+			this.set.remove(integerVal);
 		}
 	}
 
@@ -151,7 +152,7 @@ public class IntSet {
 	 */
 	@Override
 	public String toString() {
-		return this.getArray().toString().replaceAll("^[(.*)]$","{$1}");
+		return Arrays.toString(this.getArray()).replaceAll("^\\[(.*)\\]$","{$1}");
 	}
 
 }
