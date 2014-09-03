@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 /**
  * Representation of a finite set of integers.
  * 
@@ -16,8 +18,13 @@ public class IntSet {
 	 * @post getCapacity() == capacity
 	 */
 	public IntSet(int capacity) {
-		throw new UnsupportedOperationException("not yet implemented");
+		this.set = new ArrayList<Integer>();
+		this.capacity = capacity;
 	}
+	
+	private ArrayList<Integer> set;
+	private int capacity;
+	
 
 	/**
 	 * Test whether the set is empty.
@@ -25,7 +32,7 @@ public class IntSet {
 	 * @return getCount() == 0
 	 */
 	public boolean isEmpty() {
-		throw new UnsupportedOperationException("not yet implemented");
+		return this.set.isEmpty();
 	}
 
 	/**
@@ -34,7 +41,7 @@ public class IntSet {
 	 * @return exists int v in getArray() such that v == value
 	 */
 	public boolean has(int value) {
-		throw new UnsupportedOperationException("not yet implemented");
+		return this.set.contains(value);
 	}
 
 	/**
@@ -47,7 +54,10 @@ public class IntSet {
 	 * @post this@pre.has(value) implies (getCount() == this@pre.getCount())
 	 */
 	public void add(int value) {
-		throw new UnsupportedOperationException("not yet implemented");
+		if(this.has(value) || this.getCount() + 1 >= this.getCapacity() ){
+			return;
+		}
+		set.add(value);
 	}
 
 	/**
@@ -58,7 +68,9 @@ public class IntSet {
 	 * @post !this@pre.has(value) implies (getCount() == this@pre.getCount())
 	 */
 	public void remove(int value) {
-		throw new UnsupportedOperationException("not yet implemented");
+		if(this.set.contains(value)){
+			this.set.remove(value);
+		}
 	}
 
 	/**
@@ -72,7 +84,16 @@ public class IntSet {
 	 * @post forall int v: return.has(v) implies (has(v) and other.has(v))
 	 */
 	public IntSet intersect(IntSet other) {
-		throw new UnsupportedOperationException("not yet implemented");
+		if(other == null){
+			return null; //Or throw an Exception but the template did not throw one so I am returning null.
+		}
+		ArrayList<Integer> intersect = new ArrayList<Integer>(Arrays.asList(other.getArray()));
+		intersect.retainAll(this.set);
+		IntSet intersectIntSet = new IntSet(intersect.size());
+		for(Integer v : intersect){
+			intersectIntSet.add(v);
+		}
+		return intersectIntSet;
 	}
 
 	/**
@@ -87,7 +108,16 @@ public class IntSet {
 	 * @post forall int v: return.has(v) implies (has(v) or other.has(v))
 	 */
 	public IntSet union(IntSet other) {
-		throw new UnsupportedOperationException("not yet implemented");
+		if(other == null){
+			return null; //Or throw an Exception but the template did not throw one so I am returning null.
+		}
+		ArrayList<Integer> union = new ArrayList<Integer>(Arrays.asList(other.getArray()));
+		union.addAll(this.set);
+		IntSet unionIntSet = new IntSet(union.size());
+		for(Integer v : union){
+			unionIntSet.add(v);
+		}
+		return unionIntSet;
 	}
 
 	/**
@@ -96,22 +126,22 @@ public class IntSet {
 	 * @post return.length == getCount()
 	 * @post forall int v in return: has(v)
 	 */
-	public int[] getArray() {
-		throw new UnsupportedOperationException("not yet implemented");
+	public Integer[] getArray() {
+		return this.set.toArray(new Integer[this.set.size()]);
 	}
 
 	/**
 	 * Returns the number of elements in the set.
 	 */
 	public int getCount() {
-		throw new UnsupportedOperationException("not yet implemented");
+		return this.set.size();
 	}
 
 	/**
 	 * Returns the maximal number of elements in the set.
 	 */
 	public int getCapacity() {
-		throw new UnsupportedOperationException("not yet implemented");
+		return this.capacity;
 	}
 
 	/**
@@ -121,7 +151,7 @@ public class IntSet {
 	 */
 	@Override
 	public String toString() {
-		throw new UnsupportedOperationException("not yet implemented");
+		return this.getArray().toString().replaceAll("^[(.*)]$","{$1}");
 	}
 
 }
